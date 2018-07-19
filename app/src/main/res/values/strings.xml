@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TemplateApp</string>
+
+    <string name="app_exit_tips">再按一次退出应用</string>
+
+    <string name="title_android_path">Android中的路径</string>
+</resources>

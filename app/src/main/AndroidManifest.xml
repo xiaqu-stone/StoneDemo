@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.stone.templateapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- 关于权限的声明，还可以分为读权限与写权限，外界应用在访问此provider的时候必须依次声明相应的读写权限，否则外界应用会异常终止 -->
+        <provider
+            android:name="com.stone.templateapp.demo.provider.BookProvider"
+            android:authorities="${applicationId}.book_provider"
+            android:permission="com.qxb.PROVIDER"
+            android:process=":provider" />
+
+        <activity android:name="com.stone.templateapp.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.stone.templateapp.module.AndroidPathActivity" />
+        <activity android:name="com.stone.templateapp.module.ZxingScannerActivity" />
+        <activity android:name="com.stone.templateapp.demo.provider.ProviderActivity" />
+
+        <service
+            android:name="com.stone.templateapp.demo.socket.TCPServerService"
+            android:process=":tcp_server" />
+
+        <activity
+            android:name="com.stone.templateapp.demo.socket.TCPClientActivity"
+            android:windowSoftInputMode="adjustResize" />
+    </application>
+
+</manifest>
