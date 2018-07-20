@@ -21,29 +21,33 @@
 
         <!-- 关于权限的声明，还可以分为读权限与写权限，外界应用在访问此provider的时候必须依次声明相应的读写权限，否则外界应用会异常终止 -->
         <provider
-            android:name="com.stone.templateapp.demo.provider.BookProvider"
+            android:name=".demo.provider.BookProvider"
             android:authorities="${applicationId}.book_provider"
             android:permission="com.qxb.PROVIDER"
             android:process=":provider" />
 
-        <activity android:name="com.stone.templateapp.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.stone.templateapp.module.AndroidPathActivity" />
-        <activity android:name="com.stone.templateapp.module.ZxingScannerActivity" />
-        <activity android:name="com.stone.templateapp.demo.provider.ProviderActivity" />
+        <activity android:name=".module.AndroidPathActivity" />
+        <activity android:name=".module.ZxingScannerActivity" />
+        <activity android:name=".demo.provider.ProviderActivity" />
 
         <service
-            android:name="com.stone.templateapp.demo.socket.TCPServerService"
+            android:name=".demo.socket.TCPServerService"
             android:process=":tcp_server" />
+        <service
+            android:name=".demo.binderpool.BinderPoolService"
+            android:process=":binder_pool" />
 
         <activity
-            android:name="com.stone.templateapp.demo.socket.TCPClientActivity"
+            android:name=".demo.socket.TCPClientActivity"
             android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".demo.binderpool.BinderPoolActivity" />
     </application>
 
 </manifest>

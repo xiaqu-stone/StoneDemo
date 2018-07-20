@@ -36,6 +36,8 @@ class TCPClientActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tcpclient)
 
+        setTitle(R.string.title_socket_ipc)
+
         btnSend.setOnClickListener { clickBtnSend() }
 
         startService(Intent(act, TCPServerService::class.java))

@@ -9,5 +9,6 @@ class ZxingScannerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zxing_scanner)
+        setTitle(R.string.title_zxing)
     }
 }

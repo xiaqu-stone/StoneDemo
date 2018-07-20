@@ -11,6 +11,7 @@
 
 - provider 通过ContentProvider 实现IPC
 - socket 通过socket 实现IPC
+- binderpool 实现AIDL的Binder连接池，用以大型项目多个业务模块都需要跨进程通信的场景。
 
 ### module
 
