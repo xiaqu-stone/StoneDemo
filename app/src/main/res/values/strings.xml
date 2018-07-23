@@ -5,6 +5,7 @@
 
     <string name="title_android_path">Android中的路径</string>
     <string name="title_zxing">Zxing编解码</string>
+    <string name="title_content_provider">ContentProvider</string>
     <string name="title_binder_pool">IPC之Binder连接池</string>
     <string name="title_socket_ipc">IPC之Socket</string>
 </resources>

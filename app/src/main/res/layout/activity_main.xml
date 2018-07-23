@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/btnHello"
         style="@style/BtnStyle"
-        android:text="Hello World!"
+        android:text="Android Path"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnDel"
         app:layout_constraintHorizontal_bias="0.5"
@@ -52,5 +52,14 @@
         app:layout_constraintEnd_toEndOf="@+id/btnDel"
         app:layout_constraintStart_toStartOf="@+id/btnDel"
         app:layout_constraintTop_toTopOf="@+id/btnSocket" />
+
+    <TextView
+        android:id="@+id/btnProvider"
+        style="@style/BtnStyle"
+        android:text="Content Provider"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBinderPool"
+        app:layout_constraintEnd_toEndOf="@+id/btnScan"
+        app:layout_constraintStart_toStartOf="@+id/btnScan"
+        app:layout_constraintTop_toTopOf="@+id/btnBinderPool" />
 
 </android.support.constraint.ConstraintLayout>

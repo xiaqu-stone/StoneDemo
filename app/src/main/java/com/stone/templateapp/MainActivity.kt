@@ -6,6 +6,7 @@ import android.provider.CallLog
 import android.support.v7.app.AppCompatActivity
 import com.stone.log.Logs
 import com.stone.templateapp.demo.binderpool.BinderPoolActivity
+import com.stone.templateapp.demo.provider.ProviderActivity
 import com.stone.templateapp.demo.socket.TCPClientActivity
 import com.stone.templateapp.module.AndroidPathActivity
 import com.stone.templateapp.module.ZxingScannerActivity
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         btnSocket.setOnClickListener { startActivity<TCPClientActivity>() }
 
         btnBinderPool.setOnClickListener { startActivity<BinderPoolActivity>() }
+
+        btnProvider.setOnClickListener { startActivity<ProviderActivity>() }
     }
 
     private fun startScan() {
