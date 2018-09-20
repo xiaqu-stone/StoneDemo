@@ -15,6 +15,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
+        Logs.init(Logs.VERBOSE, "StoneDemo")
         app = this
     }
 
@@ -72,7 +73,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     companion object {
-        //todo 处理静态持有的问题，静态持有Activity会 break instant run
+
         @SuppressLint("StaticFieldLeak")
         private lateinit var app: App
         private const val TAG = "App"

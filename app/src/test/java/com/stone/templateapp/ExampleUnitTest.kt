@@ -5,6 +5,9 @@ import com.stone.templateapp.util.EDcryptUtils
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.File
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.LineNumberReader
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -38,5 +41,29 @@ class ExampleUnitTest {
     @Test
     fun testZip() {
         CompressUtils.zip("/Users/mac/Downloads/zip/")
+    }
+
+    @Test
+    fun testShell() {
+        val result = StringBuilder()
+        try {
+//            val exec = Runtime.getRuntime().exec("./dumpsys battery") //no
+//            val exec = Runtime.getRuntime().exec("/system/bin/dumpsys battery")//no
+//            val exec = Runtime.getRuntime().exec("echo 我草你。。") // yes
+            val exec = Runtime.getRuntime().exec("adb shell dumpsys battery") // no
+            LineNumberReader(InputStreamReader(exec.inputStream)).use {
+                var read = it.readLine()
+                while (read != null) {
+                    result.append(read.trim())
+                    println(read.trim())
+                    read = it.readLine()
+                }
+            }
+//            Logs.i(MainActivity.TAG, result)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            result.append("the IOException occurred")
+        }
+        println(result)
     }
 }

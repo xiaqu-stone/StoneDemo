@@ -121,7 +121,7 @@ object FileUtils {
     }
 
     fun saveFile(source: Bitmap, destination: File): String {
-        val fos: FileOutputStream = FileOutputStream(destination)
+        val fos = FileOutputStream(destination)
         var savePath = destination.absolutePath
 
         try {
@@ -137,7 +137,6 @@ object FileUtils {
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
-
             }
         }
 

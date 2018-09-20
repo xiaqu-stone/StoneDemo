@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.stone.templateapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +18,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon,android:allowBackup">
 
         <!-- 关于权限的声明，还可以分为读权限与写权限，外界应用在访问此provider的时候必须依次声明相应的读写权限，否则外界应用会异常终止 -->
         <provider

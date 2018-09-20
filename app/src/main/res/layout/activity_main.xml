@@ -62,4 +62,20 @@
         app:layout_constraintStart_toStartOf="@+id/btnScan"
         app:layout_constraintTop_toTopOf="@+id/btnBinderPool" />
 
+    <TextView
+        android:id="@+id/btnShellExec"
+        style="@style/BtnStyle"
+        android:layout_marginTop="12dp"
+        android:text="Shell Exec"
+        app:layout_constraintEnd_toEndOf="@+id/btnSocket"
+        app:layout_constraintStart_toStartOf="@+id/btnSocket"
+        app:layout_constraintTop_toBottomOf="@+id/btnSocket" />
+
+    <TextView
+        android:id="@+id/btnShellExec2"
+        style="@style/BtnStyle"
+        android:text="Shell Exec2"
+        app:layout_constraintEnd_toEndOf="@+id/btnBinderPool"
+        app:layout_constraintStart_toStartOf="@+id/btnBinderPool"
+        app:layout_constraintTop_toTopOf="@+id/btnShellExec" />
 </android.support.constraint.ConstraintLayout>

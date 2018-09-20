@@ -37,5 +37,11 @@ class ProviderActivity : AppCompatActivity() {
             Logs.d(TAG, "query user : ${User(userCursor.getInt(0), userCursor.getString(1), userCursor.getInt(2))}")
         }
         userCursor.close()
+
+        val aa: Any = "333".split(".", limit = 2)
+
+
     }
+
 }
+
