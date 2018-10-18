@@ -32,6 +32,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+                <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -50,6 +52,7 @@
             android:name=".demo.socket.TCPClientActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".demo.binderpool.BinderPoolActivity" />
+        <activity android:name=".module.DialogActivity" android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

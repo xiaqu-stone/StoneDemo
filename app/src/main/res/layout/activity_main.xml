@@ -6,76 +6,11 @@
     android:layout_height="match_parent"
     android:padding="8dp"
     tools:context=".MainActivity">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/btnHello"
-        style="@style/BtnStyle"
-        android:text="Android Path"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnDel"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </android.support.v7.widget.RecyclerView>
 
-    <TextView
-        android:id="@+id/btnDel"
-        style="@style/BtnStyle"
-        android:text="Del Call Log"
-        app:layout_constraintEnd_toStartOf="@+id/btnScan"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnHello"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/btnScan"
-        style="@style/BtnStyle"
-        android:text="扫描二维码"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnDel"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/btnSocket"
-        style="@style/BtnStyle"
-        android:layout_marginTop="12dp"
-        android:text="Socket"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnHello" />
-
-    <TextView
-        android:id="@+id/btnBinderPool"
-        style="@style/BtnStyle"
-        android:text="Binder Pool"
-        app:layout_constraintBottom_toBottomOf="@+id/btnSocket"
-        app:layout_constraintEnd_toEndOf="@+id/btnDel"
-        app:layout_constraintStart_toStartOf="@+id/btnDel"
-        app:layout_constraintTop_toTopOf="@+id/btnSocket" />
-
-    <TextView
-        android:id="@+id/btnProvider"
-        style="@style/BtnStyle"
-        android:text="Content Provider"
-        app:layout_constraintBottom_toBottomOf="@+id/btnBinderPool"
-        app:layout_constraintEnd_toEndOf="@+id/btnScan"
-        app:layout_constraintStart_toStartOf="@+id/btnScan"
-        app:layout_constraintTop_toTopOf="@+id/btnBinderPool" />
-
-    <TextView
-        android:id="@+id/btnShellExec"
-        style="@style/BtnStyle"
-        android:layout_marginTop="12dp"
-        android:text="Shell Exec"
-        app:layout_constraintEnd_toEndOf="@+id/btnSocket"
-        app:layout_constraintStart_toStartOf="@+id/btnSocket"
-        app:layout_constraintTop_toBottomOf="@+id/btnSocket" />
-
-    <TextView
-        android:id="@+id/btnShellExec2"
-        style="@style/BtnStyle"
-        android:text="Shell Exec2"
-        app:layout_constraintEnd_toEndOf="@+id/btnBinderPool"
-        app:layout_constraintStart_toStartOf="@+id/btnBinderPool"
-        app:layout_constraintTop_toTopOf="@+id/btnShellExec" />
 </android.support.constraint.ConstraintLayout>

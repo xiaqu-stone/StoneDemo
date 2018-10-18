@@ -1,14 +1,20 @@
 package com.stone.templateapp
 
 import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.provider.CallLog
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.stone.log.Logs
+import com.stone.recyclerwrapper.QAdapter
 import com.stone.templateapp.demo.binderpool.BinderPoolActivity
 import com.stone.templateapp.demo.provider.ProviderActivity
 import com.stone.templateapp.demo.socket.TCPClientActivity
 import com.stone.templateapp.module.AndroidPathActivity
+import com.stone.templateapp.module.DialogActivity
 import com.stone.templateapp.module.ZxingScannerActivity
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.Permission
@@ -25,24 +31,42 @@ class MainActivity : BaseActivity() {
         const val TAG = "MainActivity"
     }
 
+    private val datas = arrayListOf("Android Path", "Del Call Log", "扫描二维码", "Socket", "Binder Pool", "Content Provider", "Shell Exec", "Shell Exec2",
+            "Dialog Activity")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btnHello.setOnClickListener { startActivity<AndroidPathActivity>() }
+        recyclerView.layoutManager = GridLayoutManager(ctx, 3)
+        val adapter = QAdapter(ctx, R.layout.item_main, datas) { holder, itemData, pos ->
+            holder.setText(R.id.button, itemData)
+        }
+        recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                val pos = parent.getChildAdapterPosition(view)
+                if (pos % 3 != 2) {
+                    outRect.right = 15
+                }
+                outRect.bottom = 15
+            }
+        })
+        adapter.setOnItemClickListener { view, holder, itemData, position ->
+            Logs.d("MainActivity.onCreate() called with: view = [$view], holder = [$holder], itemData = [$itemData], position = [$position]")
+            when (position) {
+                0 -> startActivity<AndroidPathActivity>()
+                1 -> delCallLog()
+                2 -> startScan()
+                3 -> startActivity<TCPClientActivity>()
+                4 -> startActivity<BinderPoolActivity>()
+                5 -> startActivity<ProviderActivity>()
+                6 -> toast(doShellExec())
+                7 -> toast(doShellExec2())
+                8 -> startActivity<DialogActivity>()
+            }
+        }
 
-        btnDel.setOnClickListener { delCallLog() }
-
-        btnScan.setOnClickListener { startScan() }
-
-        btnSocket.setOnClickListener { startActivity<TCPClientActivity>() }
-
-        btnBinderPool.setOnClickListener { startActivity<BinderPoolActivity>() }
-
-        btnProvider.setOnClickListener { startActivity<ProviderActivity>() }
-
-        btnShellExec.setOnClickListener { toast(doShellExec()) }
-        btnShellExec2.setOnClickListener { toast(doShellExec2()) }
     }
 
     private fun doShellExec(): String {
