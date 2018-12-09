@@ -52,7 +52,9 @@
             android:name=".demo.socket.TCPClientActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".demo.binderpool.BinderPoolActivity" />
-        <activity android:name=".module.DialogActivity" android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".module.DialogActivity"
+            android:theme="@style/DialogTheme" />
     </application>
 
 </manifest>

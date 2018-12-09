@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import com.stone.templateapp.R
 import kotlinx.android.synthetic.main.activity_tcpclient.*
 import org.jetbrains.anko.act
+import org.jetbrains.anko.doAsync
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
@@ -93,7 +94,7 @@ class TCPClientActivity : AppCompatActivity() {
     private fun clickBtnSend() {
         val msg: String? = inputMsg.text.toString()
         if (!msg.isNullOrEmpty()) {
-            mPrintWriter?.println(msg)
+            doAsync { mPrintWriter?.println(msg) }
             inputMsg.setText("")
             val time = formatDateTime(System.currentTimeMillis())
             val showedMsg = "self $time : $msg\n"

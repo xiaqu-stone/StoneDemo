@@ -6,10 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.PersistableBundle
+import android.support.v4.content.ContextCompat
 import com.stone.log.Logs
 import com.stone.templateapp.BaseActivity
 import com.stone.templateapp.R
 import kotlinx.android.synthetic.main.activity_android_path.*
+import org.jetbrains.anko.act
 
 /**
  * Android中路径
@@ -62,14 +64,19 @@ class AndroidPathActivity : BaseActivity() {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("SetTextI18n")
     private fun initView() {
+        textView.text = "filesDir:\n${filesDir.absolutePath}\n\n" +
+                "getExternalFilesDir:\n${getExternalFilesDir(null)?.absolutePath}\n\n" +
+                "getExternalFilesDir(Documents -19):\n${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.absolutePath}\n\n" +
+                "ContextCompat.getExternalFilesDirs[0]:\n${ContextCompat.getExternalFilesDirs(act, null)[0].absolutePath}\n\n" +
+                "cacheDir:\n${cacheDir.absolutePath}\n\n" +
+                "Environment.getExternalStorageDirectory():\n${Environment.getExternalStorageDirectory().absolutePath}\n\n" +
+                "externalCacheDirs-19:\n${externalCacheDirs[0].absolutePath}\n\n" +
+                "externalMediaDirs-21\n${externalMediaDirs[0].absolutePath}\n\n"
 
-        textView.text = "filesDir.absolutePath:\n${filesDir.absolutePath}\n\n" +
-                "getExternalFilesDir:\n${getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).absolutePath}\n\n" +
-                "cacheDir.absolutePath:\n${cacheDir.absolutePath}\n\n"
-
+        Logs.i("initView: ${textView.text}")
     }
 
     override fun onDestroy() {
