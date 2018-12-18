@@ -15,6 +15,7 @@ import com.stone.templateapp.demo.provider.ProviderActivity
 import com.stone.templateapp.demo.socket.TCPClientActivity
 import com.stone.templateapp.module.AndroidPathActivity
 import com.stone.templateapp.module.DialogActivity
+import com.stone.templateapp.module.TRuleActivity
 import com.stone.templateapp.module.ZxingScannerActivity
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.Permission
@@ -32,7 +33,7 @@ class MainActivity : BaseActivity() {
     }
 
     private val datas = arrayListOf("Android Path", "Del Call Log", "扫描二维码", "Socket", "Binder Pool", "Content Provider", "Shell Exec", "Shell Exec2",
-            "Dialog Activity")
+            "Dialog Activity", "TRule Activity")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +65,7 @@ class MainActivity : BaseActivity() {
                 6 -> toast(doShellExec())
                 7 -> toast(doShellExec2())
                 8 -> startActivity<DialogActivity>()
+                9 -> startActivity<TRuleActivity>()
             }
         }
 

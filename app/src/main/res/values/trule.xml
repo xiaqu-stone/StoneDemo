@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TRule">
+        <!--标尺开始显示位置(以小刻度为单位)-->
+        <attr name="set_location" format="integer"/>
+        <!--大刻度数、一个大刻度包含小刻度数、小刻度间隔宽度-->
+        <attr name="big_scale_num" format="integer"/>
+        <attr name="small_scale_num" format="integer"/>
+        <attr name="small_scale_space" format="dimension"/>
+        <!--中间线、大、小刻度高度、宽度-->
+        <attr name="middle_line_height" format="dimension"/>
+        <attr name="middle_line_width" format="dimension"/>
+        <attr name="big_scale_height" format="dimension"/>
+        <attr name="big_scale_width" format="dimension"/>
+        <attr name="small_scale_height" format="dimension"/>
+        <attr name="small_scale_width" format="dimension"/>
+        <!--中间线、大、小刻度颜色-->
+        <attr name="middle_line_color" format="color"/>
+        <attr name="big_scale_color" format="color"/>
+        <attr name="small_scale_color" format="color"/>
+        <!--刻度字体大小、颜色以及是否选中-->
+        <attr name="text_size" format="dimension"/>
+        <attr name="text_size_choose" format="dimension"/>
+        <attr name="text_color" format="color"/>
+        <attr name="text_color_choose" format="color"/>
+        <!--底部线颜色、高、底部线距离控件底部距离-->
+        <attr name="bottom_color" format="color"/>
+        <attr name="bottom_line_height" format="dimension"/>
+        <attr name="bottom_line_to_view_bottom" format="dimension"/>
+        <!--文本底部到中间线顶部的距离-->
+        <attr name="text_bottom_to_line_top" format="dimension"/>
+        <!--灵敏度(以倍数为记,默认为1,类型为float)-->
+        <attr name="sensitiveness" format="float"/>
+        <!--各个下标对应文本(如1月,2月则string为"月",如1天、2天则为"天",前缀Index自动添加)-->
+        <attr name="index_text" format="string"/>
+        <!--中间标记文本、是否显示(只有大刻度数目为偶数个时候生效)-->
+        <attr name="center_text" format="string"/>
+        <attr name="show_center_text" format="boolean"/>
+        <!--下标索引开始位置,默认为零-->
+        <attr name="index_start" format="integer"/>
+    </declare-styleable>
+
+    <color name="middle_line_color">#ff50f1bf</color>
+    <color name="big_scale_color">#aa86a7e8</color>
+    <color name="small_scale_color">#aa86a7e8</color>
+    <color name="bottom_line_color">#aa86a7e8</color>
+    <color name="text_color">#aa86a7e8</color>
+    <color name="text_color_choose">#ff50f1bf</color>
+</resources>

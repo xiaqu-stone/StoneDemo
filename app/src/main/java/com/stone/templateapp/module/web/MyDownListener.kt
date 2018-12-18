@@ -2,7 +2,7 @@ package com.stone.templateapp.module.web
 
 import android.app.Activity
 import android.webkit.DownloadListener
-import com.stone.templateapp.extensions.isValid
+import com.stone.commonutils.isValid
 
 /**
  * Created By: sqq

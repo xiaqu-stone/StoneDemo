@@ -31,7 +31,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -55,6 +54,7 @@
         <activity
             android:name=".module.DialogActivity"
             android:theme="@style/DialogTheme" />
+        <activity android:name=".module.TRuleActivity"></activity>
     </application>
 
 </manifest>

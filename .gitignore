@@ -7,3 +7,4 @@ build
 .externalNativeBuild
 .idea
 gradlew*
+common-utils

@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
+import com.stone.commonutils.ctx
+import com.stone.commonutils.isValid
 import com.stone.log.Logs
 import com.stone.templateapp.R
 import com.stone.templateapp.module.web.MyDownListener
