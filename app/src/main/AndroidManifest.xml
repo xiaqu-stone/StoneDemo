@@ -54,7 +54,8 @@
         <activity
             android:name=".module.DialogActivity"
             android:theme="@style/DialogTheme" />
-        <activity android:name=".module.TRuleActivity"></activity>
+        <activity android:name=".module.TRuleActivity" />
+        <activity android:name=".module.CanvasPathActivity"></activity>
     </application>
 
 </manifest>

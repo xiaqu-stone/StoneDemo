@@ -13,10 +13,7 @@ import com.stone.recyclerwrapper.QAdapter
 import com.stone.templateapp.demo.binderpool.BinderPoolActivity
 import com.stone.templateapp.demo.provider.ProviderActivity
 import com.stone.templateapp.demo.socket.TCPClientActivity
-import com.stone.templateapp.module.AndroidPathActivity
-import com.stone.templateapp.module.DialogActivity
-import com.stone.templateapp.module.TRuleActivity
-import com.stone.templateapp.module.ZxingScannerActivity
+import com.stone.templateapp.module.*
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,7 +30,7 @@ class MainActivity : BaseActivity() {
     }
 
     private val datas = arrayListOf("Android Path", "Del Call Log", "扫描二维码", "Socket", "Binder Pool", "Content Provider", "Shell Exec", "Shell Exec2",
-            "Dialog Activity", "TRule Activity")
+            "Dialog Activity", "TRule Activity","Canvas Path")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +63,7 @@ class MainActivity : BaseActivity() {
                 7 -> toast(doShellExec2())
                 8 -> startActivity<DialogActivity>()
                 9 -> startActivity<TRuleActivity>()
+                10 -> startActivity<CanvasPathActivity>()
             }
         }
 

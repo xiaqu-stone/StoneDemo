@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.stone.commonutils.DisplayExtKt;
-import com.stone.log.Logs;
 import com.stone.templateapp.R;
 
 public class TRule extends View {
@@ -140,10 +139,7 @@ public class TRule extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        MeasureSpec.getSize(widthMeasureSpec);
-//        MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
-
     }
 
     @Override
@@ -194,7 +190,7 @@ public class TRule extends View {
                     mTextPoint.setTextSize(mTextSize);
                 }
                 mTextPoint.getTextBounds(drawStr, 0, drawStr.length(), bounds);
-                Logs.d("大刻度文字： " + drawStr);
+//                Logs.d("大刻度文字： " + drawStr);
                 //添加刻度文字
                 canvas.drawText(drawStr, location - bounds.width() / 2, mHeight - mToBottomHeight - mMiddleLineHeight - mToLineTop, mTextPoint);
             } else {
@@ -283,6 +279,11 @@ public class TRule extends View {
         }
     };
 
+
+    /**
+     * 每次滚动，计算出当前滚动的距离，是否超过当前刻度边界，若超过则取边界值；若不超过则计算出当前滚动距离对应的刻度
+     * @param delta
+     */
     private void doScroll(int delta) {
         //每次onTouch完成之后要考虑具体偏移设计,需要参照单次onTouch总的偏移量(手势的onScroll方法会多次执行,所以需要做累加).
         mOnceTouchEventOffset += delta * mSensitiveness;
@@ -304,16 +305,24 @@ public class TRule extends View {
     }
 
 
+    /**
+     *
+     * @param index
+     * @param inner
+     * @param callBack
+     */
     public void innerSetCurrentIndex(int index, boolean inner, boolean callBack) {
         if (mCurrentIndex < 0 || mCurrentIndex > mBigScaleNum * mSmallScaleNum) {
             return;
         }
         if (!inner) {
+            //确保当前的刻度索引距离 是小刻度的整数倍
             mCurrentIndex = Math.round(index / mSmallScaleNum) * mSmallScaleNum;
         } else {
             mCurrentIndex = index;
         }
         invalidate();
+        //偏移过半 则 +1 ；不足则 舍去
         if (mCurrentIndex % mSmallScaleNum >= mSmallScaleNum / 2) {
             mPosition = mCurrentIndex / mSmallScaleNum + 1;
         } else {

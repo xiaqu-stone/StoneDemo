@@ -9,8 +9,14 @@
     <com.stone.templateapp.module.view.TRule
         android:id="@+id/tRule1"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:background="@color/colorPrimary"
+        app:big_scale_num="12"
+        app:center_text="中间"
+        app:show_center_text="false"
+        app:index_text="000"
+        app:index_start="1"
+        app:bottom_line_to_view_bottom="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
