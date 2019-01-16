@@ -5,6 +5,16 @@
 
 ## 目录
 
+### View
+
+#### BezierProgressView
+
+`module/view/BezierProgressView`
+
+![image](https://stone-xiaqu-1256490509.cos.ap-shanghai.myqcloud.com/android/canvas/BezierProgressView.png)
+
+![image](https://stone-xiaqu-1256490509.cos.ap-shanghai.myqcloud.com/android/canvas/BezierProgressView.gif)
+
 ### demo 
 
 阅读测试记录
