@@ -56,6 +56,7 @@
             android:theme="@style/DialogTheme" />
         <activity android:name=".module.TRuleActivity" />
         <activity android:name=".module.CanvasPathActivity"></activity>
+        <activity android:name=".module.BezierProgressActivity" />
     </application>
 
 </manifest>

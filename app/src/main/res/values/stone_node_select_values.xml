@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StoneNodeSelectView">
+        <attr name="stone_selectRadius" format="dimension|reference" />
+        <attr name="stone_radius" format="dimension|reference" />
+        <attr name="stone_circle_selectColor" format="color|reference" />
+        <attr name="stone_circle_color" format="color|reference" />
+        <attr name="stone_textSize" format="dimension|reference" />
+        <attr name="stone_select_textSize" format="dimension|reference" />
+        <attr name="stone_textColor" format="color|reference" />
+        <attr name="stone_select_textColor" format="color|reference" />
+        <attr name="stone_node_position" format="integer" />
+    </declare-styleable>
+</resources>
