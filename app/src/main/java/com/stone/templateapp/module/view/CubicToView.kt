@@ -66,7 +66,6 @@ class CubicToView : View {
         r = Math.min(mWidth, mHeight) * 0.95f
         invalidate()
         rectF = RectF(-r, -r, r, r)
-
     }
 
     /**

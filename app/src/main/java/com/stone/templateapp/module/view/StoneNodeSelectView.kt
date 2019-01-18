@@ -122,12 +122,12 @@ class StoneNodeSelectView : View {
         mWidth = mViewWidth - paddingLeft - paddingRight
         mHeight = mViewHeight - paddingTop - paddingBottom
 
-        val maxRA = Math.min(mWidth * 0.9f / mNodeCount, mHeight.toFloat())//大圆的最大半径
+        val maxRA = Math.min(mWidth * 0.9f / mNodeCount, mHeight * 1f) / 2//大圆的最大半径
         //考虑边际问题
         if (rA >= maxRA) rA = maxRA
         if (rA == 0f) rA = 1.3f * r
         if (r >= rA) r = rA - 20f
-        len = (mWidth - 2 * rA) / (mNodeCount - 1)
+        if (mNodeCount > 1) len = (mWidth - 2 * rA) / (mNodeCount - 1)
 //        rectF = RectF(-r, -r, r, r)
     }
 
@@ -140,14 +140,19 @@ class StoneNodeSelectView : View {
         canvas.translate(paddingLeft + 0f, paddingTop + mHeight / 2f)
         mPaint.color = mCircleColor
         canvas.drawLine(rA, 0f, mWidth - rA, 0f, mPaint)
-        for (i in 0 until mNodeCount) {
-            if (i == curPos) {
-                mPaint.color = mCircleSelectColor
-                canvas.drawCircle(rA + i * len, 0f, rA, mPaint)
-            } else {
-                mPaint.color = mCircleColor
-                canvas.drawCircle(rA + i * len, 0f, r, mPaint)
+        if (mNodeCount > 1) {
+            for (i in 0 until mNodeCount) {
+                if (i == curPos) {
+                    mPaint.color = mCircleSelectColor
+                    canvas.drawCircle(rA + i * len, 0f, rA, mPaint)
+                } else {
+                    mPaint.color = mCircleColor
+                    canvas.drawCircle(rA + i * len, 0f, r, mPaint)
+                }
             }
+        } else {
+            mPaint.color = mCircleSelectColor
+            canvas.drawCircle(mWidth / 2f, 0f, rA, mPaint)
         }
 
         drawText(canvas)
@@ -162,16 +167,22 @@ class StoneNodeSelectView : View {
         val yAxis = getTextBaselineOffset(mTextPaint, mTextSize)
         val ySelectAxis = getTextBaselineOffset(mTextPaint, mSelectTextSize)
 
-        for (i in 0 until mNodeCount) {
-            if (i == curPos) {
-                mTextPaint.color = mSelectTextColor
-                mTextPaint.textSize = mSelectTextSize
-                canvas.drawText(mDataList[i], rA + i * len, ySelectAxis, mTextPaint)
-            } else {
-                mTextPaint.color = mTextColor
-                mTextPaint.textSize = mTextSize
-                canvas.drawText(mDataList[i], rA + i * len, yAxis, mTextPaint)
+        if (mNodeCount > 1) {
+            for (i in 0 until mNodeCount) {
+                if (i == curPos) {
+                    mTextPaint.color = mSelectTextColor
+                    mTextPaint.textSize = mSelectTextSize
+                    canvas.drawText(mDataList[i], rA + i * len, ySelectAxis, mTextPaint)
+                } else {
+                    mTextPaint.color = mTextColor
+                    mTextPaint.textSize = mTextSize
+                    canvas.drawText(mDataList[i], rA + i * len, yAxis, mTextPaint)
+                }
             }
+        } else {
+            mTextPaint.color = mSelectTextColor
+            mTextPaint.textSize = mSelectTextSize
+            canvas.drawText(mDataList[0], mWidth / 2f, ySelectAxis, mTextPaint)
         }
     }
 
@@ -186,6 +197,9 @@ class StoneNodeSelectView : View {
     private var moveTouchCount = 0
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (isClickable) {//可点击时，判断是否在可点击区域
+            //当节点只有一个时，不处理touch事件
+            if (mNodeCount == 1) return false
+
             val touchPos = checkPoint(event)
             if (touchPos < 0) return false
             return when (event.action) {
