@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.stone.templateapp.module.CanvasPathActivity">
+    tools:context="com.stone.templateapp.module.BezierProgressActivity">
 
     <com.stone.templateapp.module.view.BezierProgressView
         android:id="@+id/mTestView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         app:bezier_percent="0.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,4 +17,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <com.stone.templateapp.module.view.StoneSeekBar
+        android:id="@+id/percentSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/mTestView"
+        app:stone_seek_progress="60"
+        app:stone_seek_title="percent" />
 </android.support.constraint.ConstraintLayout>

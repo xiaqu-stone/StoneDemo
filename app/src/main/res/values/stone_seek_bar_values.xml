@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StoneSeekBar">
+        <attr name="stone_seek_title" format="string|reference" />
+        <attr name="stone_seek_progress" format="integer" />
+    </declare-styleable>
+</resources>
