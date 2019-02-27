@@ -125,8 +125,8 @@ class StoneNodeSelectView : View {
         val maxRA = Math.min(mWidth * 0.9f / mNodeCount, mHeight * 1f) / 2//大圆的最大半径
         //考虑边际问题
         if (rA >= maxRA) rA = maxRA
-        if (rA == 0f) rA = 1.3f * r
-        if (r >= rA) r = rA - 20f
+        if (rA == 0f) rA = maxRA
+        if (r >= rA) r = 0.8f * rA
         if (mNodeCount > 1) len = (mWidth - 2 * rA) / (mNodeCount - 1)
 //        rectF = RectF(-r, -r, r, r)
     }

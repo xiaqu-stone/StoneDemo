@@ -4,36 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.stone.templateapp.module.CanvasPathActivity">
 
-    <ScrollView
+    <com.stone.templateapp.module.view.LeafProgressLoadingView
+        android:id="@+id/mTestView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:stone_leaf_degree="30"
+        app:stone_leaf_percent="0" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="请往下滑动"
-                android:textSize="20sp" />
-
-            <com.stone.templateapp.module.view.StoneNodeSelectView
-                android:id="@+id/mTestView"
-                android:layout_width="match_parent"
-                android:layout_height="1200dp"
-                app:stone_circle_color="#DBDBDB"
-                app:stone_circle_selectColor="@color/colorAccent"
-                app:stone_node_position="2"
-                app:stone_radius="60dp"
-                app:stone_textSize="16sp"
-                app:stone_select_textSize="20sp" />
-        </LinearLayout>
-    </ScrollView>
-
+    <com.stone.templateapp.module.view.StoneSeekBar
+        android:id="@+id/percentSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:stone_seek_progress="50"
+        app:stone_seek_title="percent" />
 </LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.stone.templateapp.module.StoneNodeSelectActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="请往下滑动"
+                android:textSize="20sp" />
+
+            <com.stone.templateapp.module.view.StoneNodeSelectView
+                android:id="@+id/mTestView"
+                android:layout_width="match_parent"
+                android:layout_height="1200dp"
+                app:stone_circle_color="#DBDBDB"
+                app:stone_circle_selectColor="@color/colorAccent"
+                app:stone_node_position="2"
+                app:stone_radius="60dp"
+                app:stone_textSize="16sp"
+                app:stone_select_textSize="20sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -81,7 +81,7 @@ class BezierProgressView : View {
     private var mHeight: Int = 0
 
     private var r: Float = 0f
-    private lateinit var rectF: RectF
+    private var rectF: RectF = RectF()
     private val mPointF = PointF(0f, 0f)
     private var mAnimateDx = 0f
     private var mAnimateMaxDx = 0f

@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import com.stone.log.Logs
 import com.stone.templateapp.R
 import kotlinx.android.synthetic.main.activity_canvas_path.*
-import org.jetbrains.anko.toast
 
 class CanvasPathActivity : AppCompatActivity() {
 
@@ -13,10 +12,17 @@ class CanvasPathActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_canvas_path)
 
-        mTestView.mDataList = arrayListOf("7天", "14天", "30天", "60天")
-        mTestView.mChangeListener = { position, msg ->
-            Logs.d("CanvasPathActivity.onCreate() called with: $position,$msg")
-            toast(msg)
+        percentSeek.mChangeListener = { seekBar, progress, fromUser ->
+            Logs.d("CanvasPathActivity.onCreate() called with: seekBar = [$seekBar], progress = [$progress], fromUser = [$fromUser]")
+            mTestView.progress = progress
+        }
+
+        percentSeek.post {
+            //            percentSeek.mProgress = 50
+        }
+
+        mTestView.post {
+            mTestView.progress = 10
         }
     }
 }

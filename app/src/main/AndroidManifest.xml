@@ -57,6 +57,7 @@
         <activity android:name=".module.TRuleActivity" />
         <activity android:name=".module.CanvasPathActivity"></activity>
         <activity android:name=".module.BezierProgressActivity" />
+        <activity android:name=".module.StoneNodeSelectActivity" />
     </application>
 
 </manifest>

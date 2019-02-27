@@ -34,6 +34,7 @@ class StoneSeekBar : FrameLayout {
             }
             tvProgress?.text = value.toString()
             seekBar?.progress = value
+            mChangeListener?.invoke(seekBar, value, false)
         }
     var mSeekBarTitle = "title"
 

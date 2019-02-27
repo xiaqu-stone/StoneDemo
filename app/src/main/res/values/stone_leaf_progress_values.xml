@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LeafProgressLoadingView">
+        <attr name="stone_leaf_percent" format="float" />
+        <attr name="stone_leaf_degree" format="float" />
+    </declare-styleable>
+</resources>

@@ -1,14 +1,12 @@
 package com.stone.templateapp.module.view
 
+import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
 import com.stone.commonutils.ctx
-import com.stone.commonutils.sp2px
+import com.stone.commonutils.resizeBitmap
 import com.stone.log.Logs
 import com.stone.templateapp.R
 
@@ -34,45 +32,36 @@ class LeafProgressLoadingView : View {
     private var mSelectTextSize = 0f
     private var mTextColor = 0
     private var mSelectTextColor = 0
+    private var mDegree = 0f
     private fun initAttr(attributeSet: AttributeSet?, defStyle: Int) {
-        val ta = ctx.obtainStyledAttributes(attributeSet, R.styleable.StoneNodeSelectView, defStyle, 0)
-        rA = ta.getDimension(R.styleable.StoneNodeSelectView_stone_selectRadius, 126f)
-        r = ta.getDimension(R.styleable.StoneNodeSelectView_stone_radius, 92f)
-        mCircleColor = ta.getColor(R.styleable.StoneNodeSelectView_stone_circle_color, Color.parseColor("gray"))
-        mCircleSelectColor = ta.getColor(R.styleable.StoneNodeSelectView_stone_circle_selectColor, Color.parseColor("blue"))
-        mTextSize = ta.getDimension(R.styleable.StoneNodeSelectView_stone_textSize, ctx.sp2px(14f).toFloat())
-        mSelectTextSize = ta.getDimension(R.styleable.StoneNodeSelectView_stone_select_textSize, ctx.sp2px(18f).toFloat())
-        mTextColor = ta.getInt(R.styleable.StoneNodeSelectView_stone_textColor, Color.parseColor("black"))
-        mSelectTextColor = ta.getInt(R.styleable.StoneNodeSelectView_stone_select_textColor, Color.parseColor("white"))
-        curPos = ta.getInt(R.styleable.StoneNodeSelectView_stone_node_position, 0)
+        val ta = ctx.obtainStyledAttributes(attributeSet, R.styleable.LeafProgressLoadingView, defStyle, 0)
+        mPercent = ta.getFloat(R.styleable.LeafProgressLoadingView_stone_leaf_percent, 0.5f).toDouble()
+        mDegree = ta.getFloat(R.styleable.LeafProgressLoadingView_stone_leaf_degree, 45f)
         ta.recycle()
     }
 
     private val mPaint = Paint()
     private val mTextPaint = Paint()
-
+    private val mPath = Path()
+    private var rectF: RectF = RectF()
     /**
      * 当前进度的百分比
      */
     private var mPercent = 0.3
 
-    var percent = 50
+    private var oldProgress = 0
+    var progress = 50
         set(value) {
+            this.oldProgress = this.progress
             field = when {
                 value > 100 -> 100
                 value < 0 -> 0
                 else -> value
             }
-            mPercent = field.toDouble() / 100
+            leafDynamicPath(duration = 3000)
             postInvalidate()
         }
 
-    private var mNodeCount = 3
-    var mDataList = arrayListOf("7天", "14天", "30天")
-        set(value) {
-            field = value; invalidate()
-            mNodeCount = field.size
-        }
     //View的大小
     private var mViewWidth: Int = 0
     private var mViewHeight: Int = 0
@@ -86,13 +75,16 @@ class LeafProgressLoadingView : View {
     private var rA: Float = 0f
     //两个圆的圆心之间的间隔距离
     private var len: Float = 126 * 2.5f
-    //当前选中的是第几个节点
-    var curPos = 0
+
+    private var MAX_AMPLITUDE = r
+
+    private var mLeafBitmap: Bitmap
+    private var mMatrix: Matrix
 
     init {
         mPaint.isAntiAlias = true
-        mPaint.color = Color.parseColor("gray")
-        mPaint.strokeWidth = 10f
+        mPaint.color = Color.parseColor("red")
+        mPaint.strokeWidth = 5f
         mPaint.style = Paint.Style.FILL
         mPaint.isDither = true
 
@@ -103,8 +95,10 @@ class LeafProgressLoadingView : View {
         mTextPaint.textAlign = Paint.Align.CENTER
         mTextPaint.isDither = true
 
-        mNodeCount = mDataList.size
         isClickable = true
+
+        mLeafBitmap = BitmapFactory.decodeResource(ctx.resources, R.drawable.ic_leaf)
+        mMatrix = Matrix()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -122,135 +116,127 @@ class LeafProgressLoadingView : View {
         mWidth = mViewWidth - paddingLeft - paddingRight
         mHeight = mViewHeight - paddingTop - paddingBottom
 
-        val maxRA = Math.min(mWidth * 0.9f / mNodeCount, mHeight * 1f) / 2//大圆的最大半径
+        val maxRA = Math.min(mWidth / 5f, mHeight * 1f) / 2//大圆的最大半径
         //考虑边际问题
         if (rA >= maxRA) rA = maxRA
-        if (rA == 0f) rA = 1.3f * r
-        if (r >= rA) r = rA - 20f
-        if (mNodeCount > 1) len = (mWidth - 2 * rA) / (mNodeCount - 1)
-//        rectF = RectF(-r, -r, r, r)
+        if (rA == 0f) rA = maxRA
+        r = 0.8f * rA
+        MAX_AMPLITUDE = r
+        //计算r 进度条的圆弧半径 以及 进度条的长度
+        len = mWidth - mPaint.strokeWidth - 2 * rA + r
+        rectF.set(0f, -rA, 2 * rA, rA)
+        mLeafBitmap = mLeafBitmap.resizeBitmap(2 * r / 3, r / 3)
     }
+
+    private var leaf = Leaf()
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (curPos >= mNodeCount) curPos = mNodeCount
         //保存之前Canvas的状态，save之后可以调用Canvas的平移、旋转等操作
         canvas.save()
         //将原点移动到可绘制区域（去除padding的content区域）左边界的Y轴中间位置
         canvas.translate(paddingLeft + 0f, paddingTop + mHeight / 2f)
-        mPaint.color = mCircleColor
-        canvas.drawLine(rA, 0f, mWidth - rA, 0f, mPaint)
-        if (mNodeCount > 1) {
-            for (i in 0 until mNodeCount) {
-                if (i == curPos) {
-                    mPaint.color = mCircleSelectColor
-                    canvas.drawCircle(rA + i * len, 0f, rA, mPaint)
-                } else {
-                    mPaint.color = mCircleColor
-                    canvas.drawCircle(rA + i * len, 0f, r, mPaint)
-                }
-            }
-        } else {
-            mPaint.color = mCircleSelectColor
-            canvas.drawCircle(mWidth / 2f, 0f, rA, mPaint)
-        }
 
-        drawText(canvas)
-
+        mPath.rewind()
+        //直接画出两端的半圆，通过close来完成闭合；圆弧的矩形边界要考虑画笔的宽度
+//        mPath.moveTo(0f, 0f)
+        rectF.set(0f + mPaint.strokeWidth / 2, -rA, 2 * rA + mPaint.strokeWidth / 2, rA)
+        mPath.arcTo(rectF, 90f, 180f)
+//        mPath.rLineTo(8 * rA - mPaint.strokeWidth, 0f)
+        rectF.set(8 * rA - mPaint.strokeWidth / 2, -rA, 10 * rA - mPaint.strokeWidth / 2, rA)
+        mPath.arcTo(rectF, -90f, 180f)
+        mPath.close()
+        mPaint.color = Color.parseColor("#E8D98E")
+        mPaint.style = Paint.Style.FILL
+        canvas.drawPath(mPath, mPaint)
         canvas.restore()
-//        postInvalidateDelayed(200)
-        Logs.d("onDraw: r: $r,mWith: $mWidth")
-    }
 
-    private fun drawText(canvas: Canvas) {
-        // TODO: 2019/1/17 未做字体大小超出节点区域的限制
-        val yAxis = getTextBaselineOffset(mTextPaint, mTextSize)
-        val ySelectAxis = getTextBaselineOffset(mTextPaint, mSelectTextSize)
-
-        if (mNodeCount > 1) {
-            for (i in 0 until mNodeCount) {
-                if (i == curPos) {
-                    mTextPaint.color = mSelectTextColor
-                    mTextPaint.textSize = mSelectTextSize
-                    canvas.drawText(mDataList[i], rA + i * len, ySelectAxis, mTextPaint)
-                } else {
-                    mTextPaint.color = mTextColor
-                    mTextPaint.textSize = mTextSize
-                    canvas.drawText(mDataList[i], rA + i * len, yAxis, mTextPaint)
-                }
-            }
-        } else {
-            mTextPaint.color = mSelectTextColor
-            mTextPaint.textSize = mSelectTextSize
-            canvas.drawText(mDataList[0], mWidth / 2f, ySelectAxis, mTextPaint)
+        //绘制填充
+        canvas.save()
+        canvas.translate(paddingLeft + rA, paddingTop + mHeight / 2f)
+        rectF.set(-r, -r, r, r)
+        //进度填充长度
+        val pLen = (mPercent * len).toFloat()
+        mPath.rewind()
+        if (pLen >= r) {//当前进度超出圆弧区域
+            mPath.arcTo(rectF, 90f, 180f, true)
+            mPath.rLineTo(pLen - r, 0f)
+            mPath.rLineTo(0f, r * 2)
+        } else {//当前进度未超出圆弧区域
+            //夹角的余弦值
+            val cosV = (r - pLen) / r * 1.0
+            val degree = Math.toDegrees(Math.acos(cosV)).toFloat()//弧度转化为角度
+//            canvas.drawArc(rectF, 180 - degree, 2 * degree, false, mPaint)
+            mPath.arcTo(rectF, 180 - degree, 2 * degree)
         }
+        mPath.close()
+        mPaint.color = Color.parseColor("#EBA500")
+        canvas.drawPath(mPath, mPaint)
+        canvas.restore()
+        //
+//        canvas.save()
+//        canvas.translate(paddingLeft + (mWidth - rA), paddingTop + mHeight / 2f)
+//        val w = r / 3
+//        val h = r / 6
+//        rectF.set(-leaf.x - w, leaf.y - h, -leaf.x + w, leaf.y + h)
+//        canvas.drawBitmap(mLeafBitmap, null, rectF, mPaint)
+//        canvas.restore()
+
+        canvas.save()
+        canvas.translate(paddingLeft + (mWidth - rA), paddingTop + mHeight / 2f)
+        mMatrix.reset()
+        mMatrix.postTranslate(leaf.x - mLeafBitmap.width / 2, leaf.y - mLeafBitmap.height / 2)
+        mMatrix.postRotate(leaf.rotateDegree, leaf.x, leaf.y)//后两个参数：旋转中心坐标
+        canvas.drawBitmap(mLeafBitmap, mMatrix, mPaint)
+        canvas.restore()
+
+        // TODO: 2019/1/28 叶子动画完成根据 progress 更新 mPercent ，绘制进度条
+
+        Logs.d("onDraw: r: $r,leaf.x: ${leaf.x},,len：$len,,pLen: $pLen")
     }
 
-    private fun getTextBaselineOffset(mTextPaint: Paint, mTextSize: Float): Float {
-        //根据字体大小计算文本的 baseline 位置
-        mTextPaint.textSize = mTextSize
-        val metrics = mTextPaint.fontMetrics
-        return (-metrics.ascent + metrics.descent) / 2 - metrics.bottom
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        mLeafBitmap.recycle()
+        mMatrix.reset()
     }
 
-    private var tempPos = -1
-    private var moveTouchCount = 0
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (isClickable) {//可点击时，判断是否在可点击区域
-            //当节点只有一个时，不处理touch事件
-            if (mNodeCount == 1) return false
+    override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
+        super.onWindowFocusChanged(hasWindowFocus)
 
-            val touchPos = checkPoint(event)
-            if (touchPos < 0) return false
-            return when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    moveTouchCount = 0
-                    tempPos = touchPos
-                    parent.requestDisallowInterceptTouchEvent(true)//不允许父View拦截后续事件
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    if (tempPos == touchPos) {
-                        if (curPos != touchPos) {
-                            mChangeListener?.invoke(touchPos, mDataList[touchPos])
-                        }
-                        curPos = touchPos
-                        tempPos = -1
-                        invalidate()
-                    }
-                    true
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    moveTouchCount++
-                    if (moveTouchCount > 2) {//处理可能出现的滑动冲突
-                        //当MOVE事件多次出现时，允许父View拦截滑动事件，避免影响父View是可滑动View时的滑动效果
-                        parent.requestDisallowInterceptTouchEvent(false)
-                    }
-                    Logs.d("StoneNodeSelectView.onTouchEvent() called with: event = [$event]")
-                    return tempPos >= 0//
-                }
-                else -> false
-            }
-        } else {//不可点击时，不处理事件
-            return false
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+    }
+
+    private fun getLeafY(x: Float): Float {
+        return (0.7f * r * Math.sin(2 * Math.PI / len * x)).toFloat()
+    }
+
+    private var animator: ValueAnimator? = null
+    fun leafDynamicPath(max: Float = len - mLeafBitmap.width, duration: Long) {
+        animator?.cancel()
+        animator = ValueAnimator.ofFloat(Math.abs(leaf.x), max)
+        animator?.duration = duration - (Math.abs(leaf.x) / max * duration).toLong()
+        animator?.repeatCount = ValueAnimator.INFINITE
+        animator?.addUpdateListener { animation ->
+            val v = animation.animatedValue as Float
+            leaf.x = -v
+            leaf.y = getLeafY(leaf.x)
+            leaf.rotateDegree = 3 * v % max / max * 360
+            Logs.i("leafDynamicPath: v=$v, max=$max")
+            postInvalidate()
         }
-    }
-
-    /**
-     * 检查点是否在可点击的节点区域内部
-     *
-     * @return >=0:在可点击区域内，消费事件；-1: 不在可点击区域内 不处理事件
-     */
-    private fun checkPoint(event: MotionEvent): Int {
-        for (i in 0 until mNodeCount) {
-            val dx = Math.abs(event.x - (paddingLeft + rA + i * len))
-            val dy = Math.abs(event.y - (paddingTop + mHeight / 2f))
-            if (dx <= r && dy <= r) {//在节点区域内
-                return i
-            }
-        }
-        return -1
+        animator?.start()
     }
 
 
+    class Leaf {
+        var x = 0f
+        var y = 0f
+        var animator: ValueAnimator? = null
+        var amplitude = 0
+        var rotateDegree = 0f
+    }
 }
