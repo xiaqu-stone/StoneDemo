@@ -8,3 +8,4 @@ build
 .idea
 gradlew*
 common-utils
+q-https

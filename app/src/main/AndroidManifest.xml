@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:allowBackup">
-
+        <activity android:name=".module.AndroidBuildInfoActivity"></activity>
         <!-- 关于权限的声明，还可以分为读权限与写权限，外界应用在访问此provider的时候必须依次声明相应的读写权限，否则外界应用会异常终止 -->
         <provider
             android:name=".demo.provider.BookProvider"
@@ -55,7 +55,7 @@
             android:name=".module.DialogActivity"
             android:theme="@style/DialogTheme" />
         <activity android:name=".module.TRuleActivity" />
-        <activity android:name=".module.CanvasPathActivity"></activity>
+        <activity android:name=".module.CanvasPathActivity" />
         <activity android:name=".module.BezierProgressActivity" />
         <activity android:name=".module.StoneNodeSelectActivity" />
     </application>

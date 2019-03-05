@@ -30,7 +30,7 @@ class MainActivity : BaseActivity() {
     }
 
     private val datas = arrayListOf("Android Path", "Del Call Log", "扫描二维码", "Socket", "Binder Pool", "Content Provider", "Shell Exec", "Shell Exec2",
-            "Dialog Activity", "TRule Activity", "Canvas Path", "Bezier Progress", "Node Select")
+            "Dialog Activity", "TRule Activity", "Canvas Path", "Bezier Progress", "Node Select","Build Info")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +66,7 @@ class MainActivity : BaseActivity() {
                 10 -> startActivity<CanvasPathActivity>()
                 11 -> startActivity<BezierProgressActivity>()
                 12 -> startActivity<StoneNodeSelectActivity>()
+                13 -> startActivity<AndroidBuildInfoActivity>()
             }
         }
 
