@@ -1,23 +1,26 @@
 package com.stone.templateapp
 
-import android.annotation.SuppressLint
 import android.graphics.Rect
+import android.hardware.SensorEventListener
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.provider.CallLog
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.stone.commonutils.registerShakeListener
+import com.stone.commonutils.unregisterShakeListener
 import com.stone.log.Logs
+import com.stone.mdlib.MDAlert
 import com.stone.recyclerwrapper.QAdapter
 import com.stone.templateapp.demo.binderpool.BinderPoolActivity
 import com.stone.templateapp.demo.provider.ProviderActivity
 import com.stone.templateapp.demo.socket.TCPClientActivity
 import com.stone.templateapp.module.*
+import com.stone.templateapp.module.web.WebActivity
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.ctx
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import java.io.IOException
@@ -29,15 +32,26 @@ class MainActivity : BaseActivity() {
         const val TAG = "MainActivity"
     }
 
+    private var mShakeListener: SensorEventListener? = null
     private val datas = arrayListOf("Android Path", "Del Call Log", "扫描二维码", "Socket", "Binder Pool", "Content Provider", "Shell Exec", "Shell Exec2",
-            "Dialog Activity", "TRule Activity", "Canvas Path", "Bezier Progress", "Node Select","Build Info")
+            "Dialog Activity", "TRule Activity", "Canvas Path", "Bezier Progress", "Node Select", "Build Info","QHttpDemo","Test Activity","Web Demo")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerView.layoutManager = GridLayoutManager(ctx, 3)
-        val adapter = QAdapter(ctx, R.layout.item_main, datas) { holder, itemData, pos ->
+        doAsync {
+
+        }
+
+        mShakeListener = registerShakeListener {
+            toast("摇一摇")
+            Logs.d("onCreate: ${System.currentTimeMillis()}")
+            MDAlert(this,"摇一摇").show()
+        }
+
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
+        val adapter = QAdapter(this, R.layout.item_main, datas) { holder, itemData, _ ->
             holder.setText(R.id.button, itemData)
         }
         recyclerView.adapter = adapter
@@ -67,6 +81,9 @@ class MainActivity : BaseActivity() {
                 11 -> startActivity<BezierProgressActivity>()
                 12 -> startActivity<StoneNodeSelectActivity>()
                 13 -> startActivity<AndroidBuildInfoActivity>()
+                14 -> startActivity<HttpDemoActivity>()
+                15 -> startActivity<TestActivity>()
+                16 -> startActivity<WebActivity>()
             }
         }
 
@@ -138,39 +155,31 @@ class MainActivity : BaseActivity() {
         }, Permission.CAMERA)
     }
 
-    override fun onResume() {
-        super.onResume()
-//        AppUtil.isAppAlive(act, BuildConfig.APPLICATION_ID)
-
-    }
-
     override fun onDestroy() {
         Logs.i("MainActivity1")
         super.onDestroy()
-
+        unregisterShakeListener(mShakeListener)
         Logs.i("MainActivity2")
     }
 
 
-    fun delCallLog() {
+    private fun delCallLog() {
         Logs.i("del call log ")
-        requestPermission(object : PermissionCallback {
-            @SuppressLint("MissingPermission")
-            override fun onSuccess() {
-                contentResolver.delete(CallLog.Calls.CONTENT_URI, CallLog.Calls.NUMBER + "=?", arrayOf("13589686666"))
-            }
-        }, Permission.WRITE_CALL_LOG, Permission.READ_CALL_LOG)
+
+
+//        requestPermission(object : PermissionCallback {
+//            @SuppressLint("MissingPermission")
+//            override fun onSuccess() {
+//                contentResolver.delete(CallLog.Calls.CONTENT_URI, CallLog.Calls.NUMBER + "=?", arrayOf("13589686666"))
+//            }
+//        }, Permission.WRITE_CALL_LOG, Permission.READ_CALL_LOG)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    fun requestPermission(callback: PermissionCallback, vararg permissions: String) {
+    private fun requestPermission(callback: PermissionCallback, vararg permissions: String) {
         AndPermission.with(this).runtime()
                 .permission(permissions)
                 .onGranted {
-                    Logs.i("已获取权限：${Permission.transformText(ctx, it)}")
+                    Logs.i("已获取权限：${Permission.transformText(this, it)}")
                     callback.onSuccess()
                 }
                 .start()

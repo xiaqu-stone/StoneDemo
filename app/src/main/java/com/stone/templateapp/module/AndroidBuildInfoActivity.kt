@@ -30,7 +30,13 @@ class AndroidBuildInfoActivity : AppCompatActivity() {
             "TYPE" to Build.TYPE,
             "UNKNOWN" to Build.UNKNOWN,
             "USER" to Build.USER,
-            "Build.VERSION.SDK_INT" to Build.VERSION.SDK_INT.toString()
+            "VERSION.RELEASE" to Build.VERSION.RELEASE,
+            "VERSION.BASE_OS" to Build.VERSION.BASE_OS,
+            "VERSION.CODENAME" to Build.VERSION.CODENAME,
+            "VERSION.INCREMENTAL" to Build.VERSION.INCREMENTAL,
+            "VERSION.SECURITY_PATCH" to Build.VERSION.SECURITY_PATCH,
+            "VERSION.PREVIEW_SDK_INT" to Build.VERSION.PREVIEW_SDK_INT.toString(),
+            "VERSION.SDK_INT" to Build.VERSION.SDK_INT.toString()
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

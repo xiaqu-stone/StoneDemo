@@ -2,16 +2,21 @@ package com.stone.templateapp.module
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.PersistableBundle
 import android.support.v4.content.ContextCompat
+import com.stone.commonutils.ImageFilePath
 import com.stone.log.Logs
 import com.stone.templateapp.BaseActivity
 import com.stone.templateapp.R
 import kotlinx.android.synthetic.main.activity_android_path.*
 import org.jetbrains.anko.act
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.startActivityForResult
+import org.jetbrains.anko.yesButton
 
 /**
  * Android中路径
@@ -26,16 +31,36 @@ class AndroidPathActivity : BaseActivity() {
 
         initView()
 
+        button.setOnClickListener {
+            alert {
+                title = "测试生命周期";message = "测试Activity生命周期"
+                yesButton { }
+            }.show()
+//            finish()
+        }
+        btnForResult.setOnClickListener {
+            startActivityForResult<TestActivity>(2)
+//            selectPicFromGallery(1)
+        }
+    }
 
-//        button.setOnClickListener {
-//
-//        }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Logs.d("AndroidPathActivity.onActivityResult() called with: requestCode = [$requestCode], resultCode = [$resultCode], data = [$data]")
+        when (requestCode) {
+            1 -> {
+                val path = ImageFilePath.getPath(this, data?.data)
+                Logs.i("onActivityResult: Image Path is $path")
+            }
+            2 -> {
+                Logs.i("onActivityResult: ${data?.getStringExtra("result")}")
+            }
+        }
     }
 
     override fun onStart() {
         super.onStart()
-//        startActivity<TCPClientActivity>()
-//        finish()
+
     }
 
     override fun onRestart() {

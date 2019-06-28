@@ -3,10 +3,13 @@ package com.stone.templateapp.module.web
 //import `in`.srain.cube.views.ptr.PtrFrameLayout
 import android.graphics.Bitmap
 import android.net.http.SslError
+import android.view.KeyEvent
 import android.view.View
 import android.webkit.*
 import com.stone.log.Logs
+import com.stone.templateapp.extensions.activity
 import com.stone.templateapp.extensions.overrideUrlLoading
+import org.jetbrains.anko.alert
 
 /**
  * Created By: sqq
@@ -25,8 +28,53 @@ class MyWebViewClient(
         return view.overrideUrlLoading(url)
     }
 
+    override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
+        Logs.d(TAG,"MyWebViewClient.shouldInterceptRequest() called with: view = [$view], request = [$request]")
+        return super.shouldInterceptRequest(view, request)
+    }
+
+    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        Logs.d(TAG,"MyWebViewClient.shouldOverrideUrlLoading() called with: view = [$view], request = [$request]")
+        return super.shouldOverrideUrlLoading(view, request)
+    }
+
+    override fun shouldInterceptRequest(view: WebView?, url: String?): WebResourceResponse? {
+        Logs.d(TAG,"MyWebViewClient.shouldInterceptRequest() called with: view = [$view], url = [$url]")
+        return super.shouldInterceptRequest(view, url)
+    }
+
+    override fun shouldOverrideKeyEvent(view: WebView?, event: KeyEvent?): Boolean {
+        Logs.d(TAG,"MyWebViewClient.shouldOverrideKeyEvent() called with: view = [$view], event = [$event]")
+        return super.shouldOverrideKeyEvent(view, event)
+    }
+
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-        handler.proceed()
+//        handler.proceed()
+        Logs.d(TAG,"onReceivedSslError: error:$error")
+        Logs.d(TAG,"onReceivedSslError: error.primaryError: ${error.primaryError}")
+        val sslCertificate = error.certificate
+        Logs.d(TAG,"onReceivedSslError: $sslCertificate")
+
+        when (error.primaryError) {
+            SslError.SSL_DATE_INVALID -> {
+            }
+            SslError.SSL_IDMISMATCH -> {
+            }
+            SslError.SSL_EXPIRED -> {
+            }
+            SslError.SSL_INVALID -> {
+            }
+            SslError.SSL_NOTYETVALID -> {
+            }
+            SslError.SSL_UNTRUSTED -> {
+            }
+        }
+        view.activity.alert {
+            title = "SSL证书错误";message = "SSL错误码：${error.primaryError}"
+            positiveButton("继续") { handler.proceed() }
+            negativeButton("取消") { handler.cancel() }
+            isCancelable = false
+        }.show()
     }
 
     override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
@@ -76,6 +124,12 @@ class MyWebViewClient(
         isReceivedError = true
         Logs.e(TAG, "onReceivedError deprecated")
     }
+
+    override fun onLoadResource(view: WebView?, url: String?) {
+        Logs.d(TAG,"MyWebViewClient.onLoadResource() called with: view = [$view], url = [$url]")
+        super.onLoadResource(view, url)
+    }
+
 
     companion object {
 

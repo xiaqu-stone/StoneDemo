@@ -9,11 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
+import com.stone.commonutils.callPhoneDial
 import com.stone.commonutils.ctx
 import com.stone.commonutils.isValid
 import com.stone.log.Logs
 import com.stone.templateapp.R
 import com.stone.templateapp.module.web.MyDownListener
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.cancelButton
+import org.jetbrains.anko.yesButton
 
 /**
  * 关于WebView及其附属类的一些函数扩展
@@ -58,13 +62,11 @@ internal fun WebView.overrideUrlLoading(url: String?): Boolean {
     if (url == null) return true
     if (url.startsWith("tel:")) {//支持网页拨号
         if (activity.isValid()) {
-//            todo
-//            DialogMD(activity, "是否拨打电话：\n$url")
-//                    .setDefaultBtnNegative()
-//                    .setPositiveListener { _, _ ->
-//                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
-//                        activity.startActivity(intent)
-//                    }.show()
+            activity.alert {
+                message = "是否拨打电话：\\n$url";isCancelable = false
+                yesButton { activity.callPhoneDial(url) }
+                cancelButton { it.dismiss() }
+            }.show()
             return true
         }
     } else if (url.startsWith("weixin://") || url.startsWith("intent://")) {

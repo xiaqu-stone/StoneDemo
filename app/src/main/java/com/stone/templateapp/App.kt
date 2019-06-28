@@ -24,6 +24,36 @@ class App : Application() {
 
     private fun initMainProcess() {
         ActManager.registerActivityLifecycleCallbacks(this)
+
+//        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+//            override fun onActivityPaused(activity: Activity?) {
+//                Logs.d("App.onActivityPaused() called with: activity = [$activity]")
+//            }
+//
+//            override fun onActivityResumed(activity: Activity?) {
+//                Logs.d("App.onActivityResumed() called with: activity = [$activity]")
+//            }
+//
+//            override fun onActivityStarted(activity: Activity?) {
+//                Logs.d("App.onActivityStarted() called with: activity = [$activity]")
+//            }
+//
+//            override fun onActivityDestroyed(activity: Activity?) {
+//                Logs.d("App.onActivityDestroyed() called with: activity = [$activity]")
+//            }
+//
+//            override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
+//                Logs.d("App.onActivitySaveInstanceState() called with: activity = [$activity], outState = [$outState]")
+//            }
+//
+//            override fun onActivityStopped(activity: Activity?) {
+//                Logs.d("App.onActivityStopped() called with: activity = [$activity]")
+//            }
+//
+//            override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
+//                Logs.d("App.onActivityCreated() called with: activity = [$activity], savedInstanceState = [$savedInstanceState]")
+//            }
+//        })
     }
 
 

@@ -66,4 +66,18 @@ class ExampleUnitTest {
         }
         println(result)
     }
+
+    @Test
+    fun testKotlinObject() {
+        println(TestObject.property + "  1111")
+        assertEquals("1234", TestObject.property)
+    }
+
+    @Test
+    fun testIsAssignableFrom() {
+        println("String 是 Object 的父类 ${String::class.java.isAssignableFrom(Object::class.java)}")
+        assertEquals(false, String::class.java.isAssignableFrom(Object::class.java))
+        println("Object 是 String 的父类 ${Object::class.java.isAssignableFrom(String::class.java)}")
+        assertEquals(true, Object::class.java.isAssignableFrom(String::class.java))
+    }
 }
