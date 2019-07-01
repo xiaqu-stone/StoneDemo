@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.stone.commonutils.QUtil
 import com.stone.commonutils.getSHA1Fingerprint
 import com.stone.log.Logs
 import com.stone.qpermission.reqPermissions
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_test.*
 
 class TestActivity : AppCompatActivity() {
 
-    val datas = listOf("测试Set Result", "删除短信 by id", "获取指定APP的签名SHA1")
+    val datas = listOf("测试Set Result", "删除短信 by id", "获取指定APP的签名SHA1", "android.os.Build 输出")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
@@ -54,6 +55,7 @@ class TestActivity : AppCompatActivity() {
                     val sha1 = getSHA1Fingerprint(packageName).toUpperCase()
                     Logs.i("onCreate: the SHA1 : $sha1")
                 }
+                3 -> QUtil.printOsBuild()
             }
         }
 

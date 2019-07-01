@@ -6,6 +6,7 @@
 
     <color name="white">#FFFFFF</color>
 
+    <color name="backgroud">#e0e0e0</color>
 
     <color name="cyan">#00B7EB</color>
 </resources>

@@ -34,7 +34,7 @@ class MainActivity : BaseActivity() {
 
     private var mShakeListener: SensorEventListener? = null
     private val datas = arrayListOf("Android Path", "Del Call Log", "扫描二维码", "Socket", "Binder Pool", "Content Provider", "Shell Exec", "Shell Exec2",
-            "Dialog Activity", "TRule Activity", "Canvas Path", "Bezier Progress", "Node Select", "Build Info","QHttpDemo","Test Activity","Web Demo")
+            "Dialog Activity", "TRule Activity", "Canvas Path", "Bezier Progress", "Node Select", "Build Info", "QHttpDemo", "Test Activity", "Web Demo", "DeviceInfoActivity")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,7 @@ class MainActivity : BaseActivity() {
         mShakeListener = registerShakeListener {
             toast("摇一摇")
             Logs.d("onCreate: ${System.currentTimeMillis()}")
-            MDAlert(this,"摇一摇").show()
+            MDAlert(this, "摇一摇").show()
         }
 
         recyclerView.layoutManager = GridLayoutManager(this, 3)
@@ -84,6 +84,7 @@ class MainActivity : BaseActivity() {
                 14 -> startActivity<HttpDemoActivity>()
                 15 -> startActivity<TestActivity>()
                 16 -> startActivity<WebActivity>()
+                17 -> startActivity<DeviceInfoActivity>()
             }
         }
 

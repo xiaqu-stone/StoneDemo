@@ -27,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".demo.accessibility.PacketEmptyActivity"></activity>
+        <activity android:name=".module.DeviceInfoActivity"></activity>
+        <activity android:name=".demo.accessibility.PacketEmptyActivity" />
         <activity android:name=".module.web.WebActivity" />
         <activity android:name=".module.TestActivity" />
         <activity android:name=".module.HttpDemoActivity" />
