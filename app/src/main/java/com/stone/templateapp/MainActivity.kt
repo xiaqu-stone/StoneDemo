@@ -7,6 +7,7 @@ import android.os.PersistableBundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.webkit.WebView
 import com.stone.commonutils.registerShakeListener
 import com.stone.commonutils.unregisterShakeListener
 import com.stone.log.Logs
@@ -39,6 +40,20 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        try {
+            val webView = WebView(applicationContext)
+            Logs.i("onCreate: WebView UA: 【${webView.settings.userAgentString}】")
+//            webView.customSetting()
+
+//            webView.webChromeClient = MyChromeClient()
+//            webView.webViewClient = MyWebViewClient()
+//            webView.loadUrl("https://www.baidu.com")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+
 
         doAsync {
 
@@ -163,10 +178,8 @@ class MainActivity : BaseActivity() {
         Logs.i("MainActivity2")
     }
 
-
     private fun delCallLog() {
         Logs.i("del call log ")
-
 
 //        requestPermission(object : PermissionCallback {
 //            @SuppressLint("MissingPermission")

@@ -4,10 +4,12 @@ import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.stone.commonutils.ExifUtil
 import com.stone.commonutils.QUtil
 import com.stone.commonutils.getSHA1Fingerprint
 import com.stone.log.Logs
@@ -17,10 +19,11 @@ import com.stone.recyclerwrapper.base.ViewHolder
 import com.stone.templateapp.R
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.activity_test.*
+import java.io.File
 
 class TestActivity : AppCompatActivity() {
 
-    val datas = listOf("测试Set Result", "删除短信 by id", "获取指定APP的签名SHA1", "android.os.Build 输出")
+    val datas = listOf("测试Set Result", "删除短信 by id", "获取指定APP的签名SHA1", "android.os.Build 输出", "照片exif输出")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
@@ -56,12 +59,33 @@ class TestActivity : AppCompatActivity() {
                     Logs.i("onCreate: the SHA1 : $sha1")
                 }
                 3 -> QUtil.printOsBuild()
+                4 -> {
+                    reqPermissions(Permission.READ_EXTERNAL_STORAGE) {
+                        val dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+                        recusiveDcim(dcim)
+                    }
+                }
             }
         }
 
         recyclerView.adapter = adapter
     }
 
+    private fun recusiveDcim(dir: File) {
+        Logs.i("recusiveDcim: ${dir.path}")
+        var isOutputed = false
+        val listFiles = dir.listFiles()
+        if (listFiles.isNullOrEmpty()) return
+        for (file in listFiles) {
+            if (!isOutputed && file.isFile) {
+                Logs.i("recusiveDcim: =============${dir.name}, ${file.path}=============")
+                ExifUtil.printExifInfo(file.absolutePath)
+                isOutputed = true
+            } else if (file.isDirectory && !file.name.startsWith(".")) {
+                recusiveDcim(file)
+            }
+        }
+    }
 
     private fun deleteSmsById() {
         val cursor = contentResolver.query(Uri.parse("content://sms"), arrayOf("_id", "address", "thread_id"), null, null, null)
