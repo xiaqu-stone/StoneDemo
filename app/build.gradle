@@ -1,8 +1,29 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven {
+            url "https://maven.google.com"
+        }
+    }
+    dependencies {
+        classpath 'org.aspectj:aspectjtools:1.9.0'
+    }
+}
+
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+
+repositories {
+    mavenCentral()
+}
+
 
 android {
     compileSdkVersion conf.compileSdkVersion
@@ -14,7 +35,7 @@ android {
         versionName conf.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -22,6 +43,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 //自定义 multidex 打包中 主dex要包含的类
@@ -41,7 +63,6 @@ android {
 //        dx.additionalParameters += '--minimal-main-dex'
 //    }
 //}
-
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation "com.android.support.constraint:constraint-layout:$constraint"
@@ -50,6 +71,7 @@ dependencies {
     androidTestImplementation("com.android.support.test:runner:1.0.2") {
         exclude group: 'com.android.support'
     }
+    implementation "com.android.support:multidex:$multidex"
 //    androidTestImplementation "com.android.support:support-media-compat:$support"
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -70,14 +92,19 @@ dependencies {
         exclude group: 'com.android.support'
     }
 
-    implementation("com.sqq.xiaqu:qpermission:$qpermission") {
-        exclude group: 'com.sqq.xiaqu', module: 'logs'
-    }
+    implementation("com.sqq.xiaqu:qpermission:1.0.3-2")
+//    implementation("com.sqq.xiaqu:qpermission:$qpermission") {
+//        exclude group: 'com.sqq.xiaqu', module: 'logs'
+//    }
+//    implementation project(':qpermission')
+//    implementation "com.yanzhenjie:permission:2.0.0-rc10"
     implementation "com.yanzhenjie:permission:$andPermissions"
+//    implementation "com.yanzhenjie.permission:support:2.0.1"
 
 //    implementation "com.sqq.xiaqu:common-utils:$commonUtils"
     implementation project(':common-utils')
     implementation project(':q-https')
+    implementation project(':logviewer')
 //    implementation "com.google.code.gson:gson:$gson"
 
 //
@@ -95,4 +122,52 @@ dependencies {
 //    implementation('com.google.android.gms:play-services-vision:15.0.2'){
 //        exclude group: 'com.android.support'
 //    }
+
+//    implementation "org.aspectj:aspectjrt:1.9.0"
 }
+
+
+/**  AOP 配置 **/
+
+//final def log = project.logger
+//final def variants = project.android.applicationVariants
+//
+//variants.all { variant ->
+//    if (!variant.buildType.isDebuggable()) {
+//        log.debug("Skipping non-debuggable build type '${variant.buildType.name}'.")
+//        return
+//    }
+//
+//    JavaCompile javaCompile = variant.javaCompile
+//    javaCompile.doLast {
+//        String[] args = ["-showWeaveInfo",
+//                         "-1.5",
+//                         "-inpath", javaCompile.destinationDir.toString(),
+//                         "-aspectpath", javaCompile.classpath.asPath,
+//                         "-d", javaCompile.destinationDir.toString(),
+//                         "-classpath", javaCompile.classpath.asPath,
+//                         "-bootclasspath", project.android.bootClasspath.join(File.pathSeparator)]
+//        log.debug "ajc args: " + Arrays.toString(args)
+//
+//        MessageHandler handler = new MessageHandler(true)
+//        new Main().run(args, handler)
+//        for (IMessage message : handler.getMessages(null, true)) {
+//            switch (message.getKind()) {
+//                case IMessage.ABORT:
+//                case IMessage.ERROR:
+//                case IMessage.FAIL:
+//                    log.error message.message, message.thrown
+//                    break
+//                case IMessage.WARNING:
+//                    log.warn message.message, message.thrown
+//                    break
+//                case IMessage.INFO:
+//                    log.info message.message, message.thrown
+//                    break
+//                case IMessage.DEBUG:
+//                    log.debug message.message, message.thrown
+//                    break
+//            }
+//        }
+//    }
+//}

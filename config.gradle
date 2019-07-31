@@ -27,6 +27,7 @@ ext {
     stetho = '1.5.0'
     parceler = '1.1.10'
     gson = '2.8.4' //https://github.com/google/gson
+    multidex = '1.0.3'
 
     //自封装库
     adapterRecycler = '1.0.2'

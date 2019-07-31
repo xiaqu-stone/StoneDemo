@@ -8,17 +8,19 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.webkit.WebView
+import com.github.logviewer.LogcatActivity
 import com.stone.commonutils.registerShakeListener
 import com.stone.commonutils.unregisterShakeListener
 import com.stone.log.Logs
 import com.stone.mdlib.MDAlert
+import com.stone.qpermission.QPermissonUtil
+import com.stone.qpermission.reqPermissions
 import com.stone.recyclerwrapper.QAdapter
 import com.stone.templateapp.demo.binderpool.BinderPoolActivity
 import com.stone.templateapp.demo.provider.ProviderActivity
 import com.stone.templateapp.demo.socket.TCPClientActivity
 import com.stone.templateapp.module.*
 import com.stone.templateapp.module.web.WebActivity
-import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
@@ -34,8 +36,13 @@ class MainActivity : BaseActivity() {
     }
 
     private var mShakeListener: SensorEventListener? = null
-    private val datas = arrayListOf("Android Path", "Del Call Log", "扫描二维码", "Socket", "Binder Pool", "Content Provider", "Shell Exec", "Shell Exec2",
-            "Dialog Activity", "TRule Activity", "Canvas Path", "Bezier Progress", "Node Select", "Build Info", "QHttpDemo", "Test Activity", "Web Demo", "DeviceInfoActivity")
+    private val datas = arrayListOf(
+            "Android Path", "Del Call Log", "扫描二维码", "Socket", "Binder Pool",
+            "Content Provider", "Shell Exec", "Shell Exec2", "Dialog Activity", "TRule Activity",
+            "Canvas Path", "Bezier Progress", "Node Select", "Build Info", "QHttpDemo",
+            "Test Activity", "Web Demo", "DeviceInfoActivity", "Logcat", "QPermissions Kotlin",
+            "QPermission Java"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +59,6 @@ class MainActivity : BaseActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
 
 
         doAsync {
@@ -100,6 +106,18 @@ class MainActivity : BaseActivity() {
                 15 -> startActivity<TestActivity>()
                 16 -> startActivity<WebActivity>()
                 17 -> startActivity<DeviceInfoActivity>()
+                18 -> startActivity<LogcatActivity>()
+                19 -> {
+                    reqPermissions(Permission.WRITE_EXTERNAL_STORAGE) {
+                        //                    reqPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+                        toast("get permissions1")
+                    }
+                }
+                20 -> {
+                    QPermissonUtil.reqPermissons(this, QPermissonUtil.Callback {
+                        toast("get permissions1")
+                    }, Permission.WRITE_EXTERNAL_STORAGE)
+                }
             }
         }
 
@@ -163,12 +181,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun startScan() {
-        requestPermission(object : PermissionCallback {
-            override fun onSuccess() {
-                Logs.i("startScanstartScanstartScanstartScan")
-                startActivity<ZxingScannerActivity>()
-            }
-        }, Permission.CAMERA)
+//        requestPermission(object : PermissionCallback {
+//            override fun onSuccess() {
+//                Logs.i("startScanstartScanstartScanstartScan")
+//                startActivity<ZxingScannerActivity>()
+//            }
+//        }, Permission.CAMERA)
     }
 
     override fun onDestroy() {
@@ -190,13 +208,13 @@ class MainActivity : BaseActivity() {
     }
 
     private fun requestPermission(callback: PermissionCallback, vararg permissions: String) {
-        AndPermission.with(this).runtime()
-                .permission(permissions)
-                .onGranted {
-                    Logs.i("已获取权限：${Permission.transformText(this, it)}")
-                    callback.onSuccess()
-                }
-                .start()
+//        AndPermission.with(this).runtime()
+//                .permission(permissions)
+//                .onGranted {
+//                    Logs.i("已获取权限：${Permission.transformText(this, it)}")
+//                    callback.onSuccess()
+//                }
+//                .start()
     }
 
     interface PermissionCallback {

@@ -2,6 +2,7 @@ package com.stone.templateapp
 
 import android.app.Application
 import android.content.Context
+import android.support.multidex.MultiDex
 import com.stone.commonutils.ActManager
 import com.stone.commonutils.getProcessNameQ
 import com.stone.log.Logs
@@ -10,6 +11,7 @@ import com.stone.log.Logs
 class App : Application() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
+        MultiDex.install(this)
         Logs.init(Logs.VERBOSE, "StoneDemo")
         app = this
     }
@@ -22,8 +24,11 @@ class App : Application() {
         }
     }
 
+
+
     private fun initMainProcess() {
         ActManager.registerActivityLifecycleCallbacks(this)
+//        launcherLogcatViewer()
 
 //        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
 //            override fun onActivityPaused(activity: Activity?) {
