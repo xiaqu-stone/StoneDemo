@@ -20,6 +20,7 @@ import com.stone.templateapp.R
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.activity_test.*
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.security.PublicKey
@@ -28,7 +29,7 @@ class TestActivity : AppCompatActivity() {
 
     val datas = listOf(
             "测试Set Result", "删除短信 by id", "获取指定APP的签名SHA1", "android.os.Build 输出", "照片exif输出",
-            "测试RSA加解密大文件数据", "AES 加解密", "RSA 对文件加密", "RSA 对文件解密", "AES 文件加解密"
+            "测试RSA加解密大文件数据", "AES 加解密", "RSA 对文件加密", "RSA 对文件解密", "AES 文件加解密", "测试外部获取Coll DeviceKey"
     )
     val keyLength = 2048
     val keyPair = RsaEncrypt.generateRSAKeyPair(keyLength)
@@ -71,7 +72,7 @@ class TestActivity : AppCompatActivity() {
                 4 -> {
                     reqPermissions(Permission.READ_EXTERNAL_STORAGE) {
                         val dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
-                        recusiveDcim(dcim)
+                        recusiveDcim(File(dcim, "Camera"))
                     }
                 }
 
@@ -95,18 +96,38 @@ class TestActivity : AppCompatActivity() {
                 9 -> {
                     reqPermissions(Permission.WRITE_EXTERNAL_STORAGE) { testAesFile() }
                 }
+                10 -> QUtil.logDuration { getDeviceFingerprintFromStorage() }
             }
         }
 
         recyclerView.adapter = adapter
     }
 
+    private fun getDeviceFingerprintFromStorage(): String {
+        try {
+            val dir = File(Environment.getExternalStorageDirectory(), ".coll")
+            val deviceF = File(dir, ".device")
+
+            if (deviceF.exists()) {
+                Logs.d("getDeviceFingerprintFromStorage: ${deviceF.absolutePath}")
+                FileInputStream(deviceF).use {
+                    val deviceId = String(it.readBytes())
+                    Logs.i("通过外部存储获取到DeviceKey:$deviceId")
+                    return deviceId
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return ""
+    }
+
     private fun testAesFile() {
         val parent = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        if(!parent.exists())parent.mkdirs()
+        if (!parent.exists()) parent.mkdirs()
         val originFile = File(parent, "testAes.json")
 //        if (!originFile.exists()) originFile.createNewFile()
-        if (!originFile.exists()||originFile.length() < 100) {
+        if (!originFile.exists() || originFile.length() < 100) {
 
             val writer = JsonWriter(OutputStreamWriter(FileOutputStream(originFile)))
             writer.beginArray()
@@ -212,7 +233,7 @@ class TestActivity : AppCompatActivity() {
             if (!isOutputed && file.isFile) {
                 Logs.i("recusiveDcim: =============${dir.name}, ${file.path}=============")
                 ExifUtil.printExifInfo(file.absolutePath)
-                isOutputed = true
+//                isOutputed = true
             } else if (file.isDirectory && !file.name.startsWith(".")) {
                 recusiveDcim(file)
             }

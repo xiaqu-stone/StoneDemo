@@ -80,4 +80,16 @@ class ExampleUnitTest {
         println("Object 是 String 的父类 ${Object::class.java.isAssignableFrom(String::class.java)}")
         assertEquals(true, Object::class.java.isAssignableFrom(String::class.java))
     }
+
+
+    @Test
+    fun testEncryptNumber() {
+        println(encryptNumber("18923459876"))
+
+        println(encryptNumber("18655519876"))
+    }
+
+    private fun encryptNumber(number: String): String {
+        return number.replaceRange(3, 7, "****")
+    }
 }
