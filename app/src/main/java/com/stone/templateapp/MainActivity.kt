@@ -41,7 +41,7 @@ class MainActivity : BaseActivity() {
             "Content Provider", "Shell Exec", "Shell Exec2", "Dialog Activity", "TRule Activity",
             "Canvas Path", "Bezier Progress", "Node Select", "Build Info", "QHttpDemo",
             "Test Activity", "Web Demo", "DeviceInfoActivity", "Logcat", "QPermissions Kotlin",
-            "QPermission Java"
+            "QPermission Java", "TestButtonActivity"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,6 +118,7 @@ class MainActivity : BaseActivity() {
                         toast("get permissions1")
                     }, Permission.WRITE_EXTERNAL_STORAGE)
                 }
+                21 -> startActivity<TestButtonActivity>()
             }
         }
 
