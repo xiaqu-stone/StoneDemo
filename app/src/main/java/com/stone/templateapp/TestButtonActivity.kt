@@ -7,9 +7,7 @@ import android.widget.LinearLayout
 import com.stone.commonutils.dp2px
 import com.stone.log.Logs
 import com.stone.qpermission.reqPermissions
-import com.stone.templateapp.util.getContactPersonColumn
-import com.stone.templateapp.util.getContactPhoneColumn
-import com.stone.templateapp.util.getContacts
+import com.stone.templateapp.util.*
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.activity_test_button.*
 import org.jetbrains.anko.doAsync
@@ -35,11 +33,46 @@ class TestButtonActivity : AppCompatActivity() {
             }
         }
 
+        addNewButton("获取通讯录——RawContact") {
+            reqPermissions(Permission.READ_CONTACTS) {
+                doAsync { getContactRawColumn() }
+            }
+        }
+
 
         addNewButton("获取联系人") {
             reqPermissions(Permission.READ_CONTACTS) {
                 doAsync { getContacts() }
             }
+        }
+
+
+        addNewButton("插入联系人") {
+            reqPermissions(Permission.WRITE_CONTACTS) {
+                doAsync { insertContact("周八", "18500001111", "test@163.com") }
+            }
+        }
+
+        addNewButton("批量插入联系人") {
+            reqPermissions(Permission.WRITE_CONTACTS) {
+                doAsync {
+                    insertContacts("快牛1" to "123456", "快牛2" to "111111", "快牛3" to "22222")
+                }
+            }
+        }
+
+        addNewButton("发送邮件") {
+            doAsync {
+                val param = MailSender.MailParam()
+                param.username = "sunqinqin@kuainiugroup.com"
+                param.password = "Qsq123456qsQ"
+                param.sendFromAddress = "sunqinqin@kuainiugroup.com"
+                param.title = "这是标题"
+                param.content = "这是测试邮件内容"
+                param.sendToAddress = listOf("stonexiaqu@163.com")
+                MailSender(param).sendTextMail()
+            }
+
         }
     }
 
