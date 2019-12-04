@@ -1,5 +1,7 @@
 package com.stone.templateapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
@@ -7,6 +9,9 @@ import android.widget.LinearLayout
 import com.stone.commonutils.dp2px
 import com.stone.log.Logs
 import com.stone.qpermission.reqPermissions
+import com.stone.templateapp.demo.dynamicproxy.DynamicProxy
+import com.stone.templateapp.demo.dynamicproxy.RealSubject
+import com.stone.templateapp.demo.dynamicproxy.Subject
 import com.stone.templateapp.util.*
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.activity_test_button.*
@@ -73,6 +78,39 @@ class TestButtonActivity : AppCompatActivity() {
                 MailSender(param).sendTextMail()
             }
 
+        }
+
+        addNewButton("修改PIN DIAL") {
+            val oldPin = "1233"
+            val newPin = "1234"
+            val ussdCode = "**04*$oldPin*$newPin*$newPin#"
+//            val uri = Uri.parse("tel:$ussdCode")
+            val uri = Uri.fromParts("tel", ussdCode, "#")
+            Logs.i("onCreate: $uri")
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = uri
+            startActivity(intent)
+        }
+
+
+        addNewButton("修改PIN CALL") {
+            val oldPin = "1233"
+            val newPin = "1234"
+            val ussdCode = "**04*$oldPin*$newPin*$newPin#"
+//            val uri = Uri.parse("tel:$ussdCode")
+            val uri = Uri.fromParts("tel", ussdCode, "#")
+            Logs.i("onCreate: $uri")
+            val intent = Intent(Intent.ACTION_CALL)
+            intent.data = uri
+            reqPermissions(Permission.CALL_PHONE) {
+                startActivity(intent)
+            }
+        }
+
+        addNewButton("动态代理") {
+            val target = RealSubject()
+            target.execute()
+            DynamicProxy().newProxy<Subject>(target).execute()
         }
     }
 

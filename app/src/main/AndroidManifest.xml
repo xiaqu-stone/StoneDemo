@@ -84,6 +84,7 @@
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <uses-sdk tools:overrideLibrary="com.stone.retrofit2_gson_convert" />
 

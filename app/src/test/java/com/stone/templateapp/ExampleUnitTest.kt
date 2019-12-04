@@ -1,5 +1,8 @@
 package com.stone.templateapp
 
+import com.stone.templateapp.demo.dynamicproxy.DynamicProxy
+import com.stone.templateapp.demo.dynamicproxy.RealSubject
+import com.stone.templateapp.demo.dynamicproxy.Subject
 import com.stone.templateapp.util.CompressUtils
 import com.stone.templateapp.util.EDcryptUtils
 import org.junit.Assert.assertEquals
@@ -91,5 +94,16 @@ class ExampleUnitTest {
 
     private fun encryptNumber(number: String): String {
         return number.replaceRange(3, 7, "****")
+    }
+
+    @Test
+    fun testDynamicProxy() {
+        val target = RealSubject()
+        target.execute()
+//        val handler = DynamicProxy(target)
+//        val subject = Proxy.newProxyInstance(Subject::class.java.classLoader, arrayOf(Subject::class.java), handler) as Subject
+//        subject.execute()
+
+        DynamicProxy().newProxy<Subject>(target).execute()
     }
 }
