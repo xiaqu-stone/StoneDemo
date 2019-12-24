@@ -1,8 +1,6 @@
 package com.stone.templateapp
 
-import com.stone.templateapp.demo.dynamicproxy.DynamicProxy
-import com.stone.templateapp.demo.dynamicproxy.RealSubject
-import com.stone.templateapp.demo.dynamicproxy.Subject
+import com.stone.templateapp.demo.proxy.*
 import com.stone.templateapp.util.CompressUtils
 import com.stone.templateapp.util.EDcryptUtils
 import org.junit.Assert.assertEquals
@@ -99,11 +97,51 @@ class ExampleUnitTest {
     @Test
     fun testDynamicProxy() {
         val target = RealSubject()
-        target.execute()
-//        val handler = DynamicProxy(target)
-//        val subject = Proxy.newProxyInstance(Subject::class.java.classLoader, arrayOf(Subject::class.java), handler) as Subject
-//        subject.execute()
+        println("====================")
+        val proxy = DynamicProxy().newProxy<Subject>(target)
+//        proxy.execute()
+        proxy.execute("test")
+        println("===${proxy.javaClass}")
 
-        DynamicProxy().newProxy<Subject>(target).execute()
+        println("====================")
+
+        val newProxy = DynamicProxyJava().newProxy<Subject>(target)
+//        newProxy.execute()
+        newProxy.execute("test Java")
+
+        println("===${newProxy.javaClass}")
     }
+
+    @Test
+    fun testStaticProxy() {
+        val target = RealSubject()
+        val proxy = StaticProxy(target)
+        proxy.execute()
+        proxy.execute("test")
+    }
+
+    @Test
+    fun testCglibProxy() {
+        val target = CglibSubject()
+        val factory = CglibProxyFactory(target)
+        println("target:${target.javaClass}")
+        val proxy = factory.getProxyInstance<CglibSubject>()
+        println("proxy:${proxy.javaClass}")
+        proxy.print()
+        println("=================")
+        proxy.input("【test cglib proxy】")
+    }
+
+    @Test
+    fun testCglibProxyJava() {
+        val target = CglibSubjectJava()
+        val factory = CglibProxyJavaFactory(target)
+        println("target:${target.javaClass}")
+        val proxy = factory.getProxyInstance<CglibSubjectJava>()
+        println("proxy:${proxy.javaClass}")
+        proxy.print()
+        println("=================")
+        proxy.input("【test cglib proxy】")
+    }
+
 }

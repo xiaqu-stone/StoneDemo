@@ -9,9 +9,9 @@ import android.widget.LinearLayout
 import com.stone.commonutils.dp2px
 import com.stone.log.Logs
 import com.stone.qpermission.reqPermissions
-import com.stone.templateapp.demo.dynamicproxy.DynamicProxy
-import com.stone.templateapp.demo.dynamicproxy.RealSubject
-import com.stone.templateapp.demo.dynamicproxy.Subject
+import com.stone.templateapp.demo.proxy.DynamicProxy
+import com.stone.templateapp.demo.proxy.RealSubject
+import com.stone.templateapp.demo.proxy.Subject
 import com.stone.templateapp.util.*
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.activity_test_button.*

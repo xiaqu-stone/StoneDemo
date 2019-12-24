@@ -1,5 +1,6 @@
 package com.stone.templateapp
 
+import android.app.Instrumentation
 import android.graphics.Rect
 import android.hardware.SensorEventListener
 import android.os.Bundle
@@ -18,12 +19,14 @@ import com.stone.qpermission.reqPermissions
 import com.stone.recyclerwrapper.QAdapter
 import com.stone.templateapp.demo.binderpool.BinderPoolActivity
 import com.stone.templateapp.demo.provider.ProviderActivity
+import com.stone.templateapp.demo.proxy.CglibProxyJavaFactory
+import com.stone.templateapp.demo.proxy.CglibSubjectJava
+import com.stone.templateapp.demo.proxy.InstrumentationProxyFactory
 import com.stone.templateapp.demo.socket.TCPClientActivity
 import com.stone.templateapp.module.*
 import com.stone.templateapp.module.web.WebActivity
 import com.yanzhenjie.permission.Permission
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import java.io.IOException
@@ -41,7 +44,7 @@ class MainActivity : BaseActivity() {
             "Content Provider", "Shell Exec", "Shell Exec2", "Dialog Activity", "TRule Activity",
             "Canvas Path", "Bezier Progress", "Node Select", "Build Info", "QHttpDemo",
             "Test Activity", "Web Demo", "DeviceInfoActivity", "Logcat", "QPermissions Kotlin",
-            "QPermission Java", "TestButtonActivity"
+            "QPermission Java", "TestButtonActivity", "Cglib Proxy Instrumentation","Cglib Proxy"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,10 +63,9 @@ class MainActivity : BaseActivity() {
             e.printStackTrace()
         }
 
+//        doAsync {
 
-        doAsync {
-
-        }
+//        }
 
         mShakeListener = registerShakeListener {
             toast("摇一摇")
@@ -119,6 +121,38 @@ class MainActivity : BaseActivity() {
                     }, Permission.WRITE_EXTERNAL_STORAGE)
                 }
                 21 -> startActivity<TestButtonActivity>()
+
+                22 -> {
+                    try {
+                        val method = Class.forName("android.app.ActivityThread").getMethod("currentActivityThread")
+                        method.isAccessible = true
+                        val activityThread = method.invoke(null)
+
+                        val field = activityThread.javaClass.getDeclaredField("mInstrumentation")
+                        field.isAccessible = true
+//                        val mInstrum = activityThread.javaClass.getMethod("getInstrumentation").invoke(null)
+                        val mInstrumentation = field.get(activityThread)
+                        val factory = InstrumentationProxyFactory(mInstrumentation)
+
+                        val instrumentationProxy = factory.getProxyInstance<Instrumentation>()
+
+                        field.set(activityThread, instrumentationProxy)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
+                23 -> {
+                    val target = CglibSubjectJava()
+                    val factory = CglibProxyJavaFactory(target)
+                    println("target:${target.javaClass}")
+                    val proxy = factory.getProxyInstance<CglibSubjectJava>()
+                    println("proxy:${proxy.javaClass}")
+                    proxy.print()
+                    println("=================")
+                    proxy.input("【test cglib proxy】")
+
+                }
             }
         }
 

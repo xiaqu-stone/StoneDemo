@@ -1,4 +1,4 @@
-package com.stone.templateapp.demo.dynamicproxy
+package com.stone.templateapp.demo.proxy
 
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
@@ -9,19 +9,19 @@ import java.lang.reflect.Proxy
  * Created Time: 2019-12-04 16:58.
  */
 class DynamicProxy : InvocationHandler {
-    var mProxy: Any? = null
+    private var mProxy: Any? = null
     override fun invoke(proxy: Any?, method: Method?, args: Array<out Any>?): Any? {
 
-        println("before execute, this is the DynamicProxy $this")
+        println("before execute, this is the DynamicProxy")
 
-//        println("proxy:$, mProxy:$mProxy, args:$args")
+        println("args:$args")
         val any = if (args.isNullOrEmpty()) {
             method?.invoke(mProxy)
         } else {
-            method?.invoke(mProxy, args)
+            method?.invoke(mProxy, *args)
         }
 
-        println("after execute, this is the DynamicProxy $this")
+        println("after execute, this is the DynamicProxy")
         return any
     }
 
@@ -34,10 +34,16 @@ class DynamicProxy : InvocationHandler {
 
 interface Subject {
     fun execute()
+
+    fun execute(msg: String)
 }
 
 class RealSubject : Subject {
+    override fun execute(msg: String) {
+        println("this the RealSubject: execute message $msg")
+    }
+
     override fun execute() {
-        println("this the RealSubject: $this")
+        println("this the RealSubject: execute")
     }
 }
